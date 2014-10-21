@@ -480,7 +480,7 @@
     },
     "lib/spreadsheet.coffee.md": {
       "path": "lib/spreadsheet.coffee.md",
-      "content": "Spreadsheet\n===========\n\nLoads data from a Google spreadsheet based on its key.\n\n    module.exports.load = (key, cb) ->\n      url = \"//spreadsheets.google.com/feeds/list/#{key}/od6/public/values?alt=json\"\n      \n      $.ajax\n        dataType: \"jsonp\"\n        type: \"GET\"\n        url: url\n      .then(cb)\n        ",
+      "content": "Spreadsheet\n===========\n\nLoads data from a Google spreadsheet based on its key.\n\n    # TODO: metaprogram this to be more flexible\n    # when transforming arbitrary sheets\n    transformRows = (rows) ->\n      rows.forEach (row) ->\n        {\n          name: row.gsx$name\n          description: row.gsx$description\n          targetType: row.gsx$targettype\n          targetZone: row.gsx$targetzone\n          targetRange: row.gsx$targetrange\n          effectRadius: row.gsx$effectRadius\n        }    \n\n    processSpreadsheet = (data) ->            \n      return {\n        name: data.feed.title.$t\n        entries: transformRows(data.feed.entry)\n      }\n\n    module.exports.load = (key, cb) ->\n      url = \"//spreadsheets.google.com/feeds/list/#{key}/od6/public/values?alt=json\"\n      \n      $.ajax\n        dataType: \"jsonp\"\n        type: \"GET\"\n        url: url\n      .then (data) ->\n\nTransform our raw spreadsheet result into something more useful.\nPass the result into our callback\n\n        cb(processSpreadsheet(data))\n        ",
       "mode": "100644"
     }
   },
@@ -727,7 +727,7 @@
     },
     "lib/spreadsheet": {
       "path": "lib/spreadsheet",
-      "content": "(function() {\n  module.exports.load = function(key, cb) {\n    var url;\n    url = \"//spreadsheets.google.com/feeds/list/\" + key + \"/od6/public/values?alt=json\";\n    return $.ajax({\n      dataType: \"jsonp\",\n      type: \"GET\",\n      url: url\n    }).then(cb);\n  };\n\n}).call(this);\n",
+      "content": "(function() {\n  var processSpreadsheet, transformRows;\n\n  transformRows = function(rows) {\n    return rows.forEach(function(row) {\n      return {\n        name: row.gsx$name,\n        description: row.gsx$description,\n        targetType: row.gsx$targettype,\n        targetZone: row.gsx$targetzone,\n        targetRange: row.gsx$targetrange,\n        effectRadius: row.gsx$effectRadius\n      };\n    });\n  };\n\n  processSpreadsheet = function(data) {\n    return {\n      name: data.feed.title.$t,\n      entries: transformRows(data.feed.entry)\n    };\n  };\n\n  module.exports.load = function(key, cb) {\n    var url;\n    url = \"//spreadsheets.google.com/feeds/list/\" + key + \"/od6/public/values?alt=json\";\n    return $.ajax({\n      dataType: \"jsonp\",\n      type: \"GET\",\n      url: url\n    }).then(function(data) {\n      return cb(processSpreadsheet(data));\n    });\n  };\n\n}).call(this);\n",
       "type": "blob"
     },
     "lib/hamlet-runtime": {

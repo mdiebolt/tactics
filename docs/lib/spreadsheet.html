@@ -35,14 +35,47 @@
               <p>Loads data from a Google spreadsheet based on its key.</p>
 
             </div>
-            <div class="content"><pre><code class="lang-coffeescript">module.exports.<span class="function"><span class="title">load</span></span> = (key, cb) -&gt;
+            <div class="content"><pre><code class="lang-coffeescript"><span class="comment"># TODO: metaprogram this to be more flexible</span>
+<span class="comment"># when transforming arbitrary sheets</span>
+<span class="function"><span class="title">transformRows</span></span> = (rows) -&gt;
+  rows.forEach (row) -&gt;
+    {
+      name: row.gsx$name
+      description: row.gsx$description
+      targetType: row.gsx$targettype
+      targetZone: row.gsx$targetzone
+      targetRange: row.gsx$targetrange
+      effectRadius: row.gsx$effectRadius
+    }    
+
+<span class="function"><span class="title">processSpreadsheet</span></span> = (data) -&gt;            
+  <span class="keyword">return</span> {
+    name: data.feed.title.$t
+    entries: transformRows(data.feed.entry)
+  }
+
+module.exports.<span class="function"><span class="title">load</span></span> = (key, cb) -&gt;
   url = <span class="string">"//spreadsheets.google.com/feeds/list/<span class="subst">#{key}</span>/od6/public/values?alt=json"</span>
 
   $.ajax
     dataType: <span class="string">"jsonp"</span>
     type: <span class="string">"GET"</span>
     url: url
-  .<span class="keyword">then</span>(cb)</code></pre>
+  .<span class="keyword">then</span> (data) -&gt;</code></pre>
+</div>
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              <div class="pilwrap">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>Transform our raw spreadsheet result into something more useful.
+Pass the result into our callback</p>
+
+            </div>
+            <div class="content"><pre><code class="lang-coffeescript">    cb(processSpreadsheet(data))</code></pre>
 </div>
         </li>
         
