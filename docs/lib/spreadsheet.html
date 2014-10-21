@@ -35,10 +35,12 @@
               <p>Loads data from a Google spreadsheet based on its key.</p>
 
             </div>
-            <div class="content"><pre><code class="lang-coffeescript">module.exports.<span class="function"><span class="title">load</span></span> = (key) -&gt;
+            <div class="content"><pre><code class="lang-coffeescript">module.exports.<span class="function"><span class="title">load</span></span> = (key, cb) -&gt;
   url = <span class="string">"https://spreadsheets.google.com/pub?key=<span class="subst">#{key}</span>&amp;hl=en&amp;output=html"</span>
 
-  $.getJSON(url)</code></pre>
+  $.getJSON(url).<span class="keyword">then</span> (data) -&gt;
+    console.log data
+    cb(data)</code></pre>
 </div>
         </li>
         

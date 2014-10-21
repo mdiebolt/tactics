@@ -296,7 +296,7 @@ window["mdiebolt/tactics:master"]({
     },
     "test/google_spreadsheet.coffee": {
       "path": "test/google_spreadsheet.coffee",
-      "content": "Spreadsheet = require \"../lib/spreadsheet\"\n\ndescribe \"Google Spreadsheet wrapper\", ->\n  it \"loads spreadsheet from a given key\", ->\n    Spreadsheet.load \"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", (data) ->\n      assert.ok(Object.keys(data) > 0)\n",
+      "content": "Spreadsheet = require \"../lib/spreadsheet\"\n\ndescribe \"Google Spreadsheet wrapper\", ->\n  it \"loads spreadsheet from a given key\", ->\n    Spreadsheet.load \"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", (data) ->\n      console.log data\n      assert.ok(Object.keys(data) > 0)\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -314,7 +314,7 @@ window["mdiebolt/tactics:master"]({
     },
     "lib/spreadsheet.coffee.md": {
       "path": "lib/spreadsheet.coffee.md",
-      "content": "Spreadsheet\n===========\n\nLoads data from a Google spreadsheet based on its key.\n\n    module.exports.load = (key) ->\n      url = \"https://spreadsheets.google.com/pub?key=#{key}&hl=en&output=html\"\n      \n      $.getJSON(url)",
+      "content": "Spreadsheet\n===========\n\nLoads data from a Google spreadsheet based on its key.\n\n    module.exports.load = (key, cb) ->\n      url = \"https://spreadsheets.google.com/pub?key=#{key}&hl=en&output=html\"\n      \n      $.getJSON(url).then (data) ->\n        console.log data\n        cb(data)",
       "mode": "100644"
     }
   },
@@ -546,7 +546,7 @@ window["mdiebolt/tactics:master"]({
     },
     "test/google_spreadsheet": {
       "path": "test/google_spreadsheet",
-      "content": "(function() {\n  var Spreadsheet;\n\n  Spreadsheet = require(\"../lib/spreadsheet\");\n\n  describe(\"Google Spreadsheet wrapper\", function() {\n    return it(\"loads spreadsheet from a given key\", function() {\n      return Spreadsheet.load(\"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", function(data) {\n        return assert.ok(Object.keys(data) > 0);\n      });\n    });\n  });\n\n}).call(this);\n",
+      "content": "(function() {\n  var Spreadsheet;\n\n  Spreadsheet = require(\"../lib/spreadsheet\");\n\n  describe(\"Google Spreadsheet wrapper\", function() {\n    return it(\"loads spreadsheet from a given key\", function() {\n      return Spreadsheet.load(\"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", function(data) {\n        console.log(data);\n        return assert.ok(Object.keys(data) > 0);\n      });\n    });\n  });\n\n}).call(this);\n",
       "type": "blob"
     },
     "tileset": {
@@ -561,7 +561,7 @@ window["mdiebolt/tactics:master"]({
     },
     "lib/spreadsheet": {
       "path": "lib/spreadsheet",
-      "content": "(function() {\n  module.exports.load = function(key) {\n    var url;\n    url = \"https://spreadsheets.google.com/pub?key=\" + key + \"&hl=en&output=html\";\n    return $.getJSON(url);\n  };\n\n}).call(this);\n",
+      "content": "(function() {\n  module.exports.load = function(key, cb) {\n    var url;\n    url = \"https://spreadsheets.google.com/pub?key=\" + key + \"&hl=en&output=html\";\n    return $.getJSON(url).then(function(data) {\n      console.log(data);\n      return cb(data);\n    });\n  };\n\n}).call(this);\n",
       "type": "blob"
     },
     "lib/hamlet-runtime": {
