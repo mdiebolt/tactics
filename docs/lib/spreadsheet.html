@@ -38,7 +38,7 @@
             <div class="content"><pre><code class="lang-coffeescript"><span class="comment"># TODO: metaprogram this to be more flexible</span>
 <span class="comment"># when transforming arbitrary sheets</span>
 <span class="function"><span class="title">transformRows</span></span> = (rows) -&gt;
-  rows.forEach (row) -&gt;
+  rows.map (row) -&gt;
     {
       name: row.gsx$name
       description: row.gsx$description
@@ -48,7 +48,7 @@
       effectRadius: row.gsx$effectRadius
     }    
 
-<span class="function"><span class="title">processSpreadsheet</span></span> = (data) -&gt;            
+<span class="function"><span class="title">processSpreadsheet</span></span> = (data) -&gt;
   <span class="keyword">return</span> {
     name: data.feed.title.$t
     entries: transformRows(data.feed.entry)

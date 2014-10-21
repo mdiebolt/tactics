@@ -296,7 +296,7 @@ window["mdiebolt/tactics:master"]({
     },
     "test/google_spreadsheet.coffee": {
       "path": "test/google_spreadsheet.coffee",
-      "content": "Spreadsheet = require \"../lib/spreadsheet\"\n\ndescribe \"Google Spreadsheet wrapper\", ->\n  it \"loads spreadsheet from a given key\", (done) ->\n    Spreadsheet.load \"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", (data) ->\n      assert data.feed.author[0].name.$t is \"yahivin\"\n      done()",
+      "content": "Spreadsheet = require \"../lib/spreadsheet\"\n\ndescribe \"Google Spreadsheet wrapper\", ->\n  it \"loads spreadsheet from a given key\", (done) ->\n    Spreadsheet.load \"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", (data) ->\n      console.log data\n      assert data.feed.author[0].name.$t is \"yahivin\"\n      done()",
       "mode": "100644",
       "type": "blob"
     },
@@ -314,7 +314,7 @@ window["mdiebolt/tactics:master"]({
     },
     "lib/spreadsheet.coffee.md": {
       "path": "lib/spreadsheet.coffee.md",
-      "content": "Spreadsheet\n===========\n\nLoads data from a Google spreadsheet based on its key.\n\n    # TODO: metaprogram this to be more flexible\n    # when transforming arbitrary sheets\n    transformRows = (rows) ->\n      rows.forEach (row) ->\n        {\n          name: row.gsx$name\n          description: row.gsx$description\n          targetType: row.gsx$targettype\n          targetZone: row.gsx$targetzone\n          targetRange: row.gsx$targetrange\n          effectRadius: row.gsx$effectRadius\n        }    \n\n    processSpreadsheet = (data) ->            \n      return {\n        name: data.feed.title.$t\n        entries: transformRows(data.feed.entry)\n      }\n\n    module.exports.load = (key, cb) ->\n      url = \"//spreadsheets.google.com/feeds/list/#{key}/od6/public/values?alt=json\"\n      \n      $.ajax\n        dataType: \"jsonp\"\n        type: \"GET\"\n        url: url\n      .then (data) ->\n\nTransform our raw spreadsheet result into something more useful.\nPass the result into our callback\n\n        cb(processSpreadsheet(data))\n        ",
+      "content": "Spreadsheet\n===========\n\nLoads data from a Google spreadsheet based on its key.\n\n    # TODO: metaprogram this to be more flexible\n    # when transforming arbitrary sheets\n    transformRows = (rows) ->\n      rows.map (row) ->\n        {\n          name: row.gsx$name\n          description: row.gsx$description\n          targetType: row.gsx$targettype\n          targetZone: row.gsx$targetzone\n          targetRange: row.gsx$targetrange\n          effectRadius: row.gsx$effectRadius\n        }    \n\n    processSpreadsheet = (data) ->\n      return {\n        name: data.feed.title.$t\n        entries: transformRows(data.feed.entry)\n      }\n\n    module.exports.load = (key, cb) ->\n      url = \"//spreadsheets.google.com/feeds/list/#{key}/od6/public/values?alt=json\"\n      \n      $.ajax\n        dataType: \"jsonp\"\n        type: \"GET\"\n        url: url\n      .then (data) ->\n\nTransform our raw spreadsheet result into something more useful.\nPass the result into our callback\n\n        cb(processSpreadsheet(data))\n        ",
       "mode": "100644"
     }
   },
@@ -546,7 +546,7 @@ window["mdiebolt/tactics:master"]({
     },
     "test/google_spreadsheet": {
       "path": "test/google_spreadsheet",
-      "content": "(function() {\n  var Spreadsheet;\n\n  Spreadsheet = require(\"../lib/spreadsheet\");\n\n  describe(\"Google Spreadsheet wrapper\", function() {\n    return it(\"loads spreadsheet from a given key\", function(done) {\n      return Spreadsheet.load(\"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", function(data) {\n        assert(data.feed.author[0].name.$t === \"yahivin\");\n        return done();\n      });\n    });\n  });\n\n}).call(this);\n",
+      "content": "(function() {\n  var Spreadsheet;\n\n  Spreadsheet = require(\"../lib/spreadsheet\");\n\n  describe(\"Google Spreadsheet wrapper\", function() {\n    return it(\"loads spreadsheet from a given key\", function(done) {\n      return Spreadsheet.load(\"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", function(data) {\n        console.log(data);\n        assert(data.feed.author[0].name.$t === \"yahivin\");\n        return done();\n      });\n    });\n  });\n\n}).call(this);\n",
       "type": "blob"
     },
     "tileset": {
@@ -561,7 +561,7 @@ window["mdiebolt/tactics:master"]({
     },
     "lib/spreadsheet": {
       "path": "lib/spreadsheet",
-      "content": "(function() {\n  var processSpreadsheet, transformRows;\n\n  transformRows = function(rows) {\n    return rows.forEach(function(row) {\n      return {\n        name: row.gsx$name,\n        description: row.gsx$description,\n        targetType: row.gsx$targettype,\n        targetZone: row.gsx$targetzone,\n        targetRange: row.gsx$targetrange,\n        effectRadius: row.gsx$effectRadius\n      };\n    });\n  };\n\n  processSpreadsheet = function(data) {\n    return {\n      name: data.feed.title.$t,\n      entries: transformRows(data.feed.entry)\n    };\n  };\n\n  module.exports.load = function(key, cb) {\n    var url;\n    url = \"//spreadsheets.google.com/feeds/list/\" + key + \"/od6/public/values?alt=json\";\n    return $.ajax({\n      dataType: \"jsonp\",\n      type: \"GET\",\n      url: url\n    }).then(function(data) {\n      return cb(processSpreadsheet(data));\n    });\n  };\n\n}).call(this);\n",
+      "content": "(function() {\n  var processSpreadsheet, transformRows;\n\n  transformRows = function(rows) {\n    return rows.map(function(row) {\n      return {\n        name: row.gsx$name,\n        description: row.gsx$description,\n        targetType: row.gsx$targettype,\n        targetZone: row.gsx$targetzone,\n        targetRange: row.gsx$targetrange,\n        effectRadius: row.gsx$effectRadius\n      };\n    });\n  };\n\n  processSpreadsheet = function(data) {\n    return {\n      name: data.feed.title.$t,\n      entries: transformRows(data.feed.entry)\n    };\n  };\n\n  module.exports.load = function(key, cb) {\n    var url;\n    url = \"//spreadsheets.google.com/feeds/list/\" + key + \"/od6/public/values?alt=json\";\n    return $.ajax({\n      dataType: \"jsonp\",\n      type: \"GET\",\n      url: url\n    }).then(function(data) {\n      return cb(processSpreadsheet(data));\n    });\n  };\n\n}).call(this);\n",
       "type": "blob"
     },
     "lib/hamlet-runtime": {
