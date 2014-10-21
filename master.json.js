@@ -296,7 +296,7 @@ window["mdiebolt/tactics:master"]({
     },
     "test/google_spreadsheet.coffee": {
       "path": "test/google_spreadsheet.coffee",
-      "content": "Spreadsheet = require \"../lib/spreadsheet\"\n\ndescribe \"Google Spreadsheet wrapper\", ->\n  it \"loads spreadsheet from a given key\", ->\n    sheet = Spreadsheet.load \"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\"\n    assert.ok(Object.keys(sheet) > 0)\n",
+      "content": "Spreadsheet = require \"../lib/spreadsheet\"\n\ndescribe \"Google Spreadsheet wrapper\", ->\n  it \"loads spreadsheet from a given key\", ->\n    Spreadsheet.load \"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", (data) ->\n      assert.ok(Object.keys(data) > 0)\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -546,7 +546,7 @@ window["mdiebolt/tactics:master"]({
     },
     "test/google_spreadsheet": {
       "path": "test/google_spreadsheet",
-      "content": "(function() {\n  var Spreadsheet;\n\n  Spreadsheet = require(\"../lib/spreadsheet\");\n\n  describe(\"Google Spreadsheet wrapper\", function() {\n    return it(\"loads spreadsheet from a given key\", function() {\n      var sheet;\n      sheet = Spreadsheet.load(\"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\");\n      return assert.ok(Object.keys(sheet) > 0);\n    });\n  });\n\n}).call(this);\n",
+      "content": "(function() {\n  var Spreadsheet;\n\n  Spreadsheet = require(\"../lib/spreadsheet\");\n\n  describe(\"Google Spreadsheet wrapper\", function() {\n    return it(\"loads spreadsheet from a given key\", function() {\n      return Spreadsheet.load(\"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", function(data) {\n        return assert.ok(Object.keys(data) > 0);\n      });\n    });\n  });\n\n}).call(this);\n",
       "type": "blob"
     },
     "tileset": {
