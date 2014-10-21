@@ -296,7 +296,7 @@ window["mdiebolt/tactics:master"]({
     },
     "test/google_spreadsheet.coffee": {
       "path": "test/google_spreadsheet.coffee",
-      "content": "Spreadsheet = require \"../lib/spreadsheet\"\n\ndescribe \"Google Spreadsheet wrapper\", ->\n  it \"loads spreadsheet from a given key\", (done) ->\n    Spreadsheet.load \"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", (data) ->\n      console.log data.feed.author[0].name.$t\n      assert data.feed.author[0].name.$t is \"yahivin\"\n      done()",
+      "content": "Spreadsheet = require \"../lib/spreadsheet\"\n\ndescribe \"Google Spreadsheet wrapper\", ->\n  it \"loads spreadsheet from a given key\", (done) ->\n    Spreadsheet.load \"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", (data) ->\n      assert data.feed.author[0].name.$t is \"yahivin\"\n      done()",
       "mode": "100644",
       "type": "blob"
     },
@@ -546,7 +546,7 @@ window["mdiebolt/tactics:master"]({
     },
     "test/google_spreadsheet": {
       "path": "test/google_spreadsheet",
-      "content": "(function() {\n  var Spreadsheet;\n\n  Spreadsheet = require(\"../lib/spreadsheet\");\n\n  describe(\"Google Spreadsheet wrapper\", function() {\n    return it(\"loads spreadsheet from a given key\", function(done) {\n      return Spreadsheet.load(\"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", function(data) {\n        console.log(data.feed.author[0].name.$t);\n        assert(data.feed.author[0].name.$t === \"yahivin\");\n        return done();\n      });\n    });\n  });\n\n}).call(this);\n",
+      "content": "(function() {\n  var Spreadsheet;\n\n  Spreadsheet = require(\"../lib/spreadsheet\");\n\n  describe(\"Google Spreadsheet wrapper\", function() {\n    return it(\"loads spreadsheet from a given key\", function(done) {\n      return Spreadsheet.load(\"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", function(data) {\n        assert(data.feed.author[0].name.$t === \"yahivin\");\n        return done();\n      });\n    });\n  });\n\n}).call(this);\n",
       "type": "blob"
     },
     "tileset": {
