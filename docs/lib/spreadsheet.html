@@ -36,11 +36,13 @@
 
             </div>
             <div class="content"><pre><code class="lang-coffeescript">module.exports.<span class="function"><span class="title">load</span></span> = (key, cb) -&gt;
-  url = <span class="string">"https://spreadsheets.google.com/pub?key=<span class="subst">#{key}</span>&amp;hl=en&amp;output=html"</span>
+  url = <span class="string">"//spreadsheets.google.com/feeds/list/<span class="subst">#{key}</span>/od6/public/values?alt=json"</span>
 
-  $.getJSON(url).<span class="keyword">then</span> (data) -&gt;
-    console.log data
-    cb(data)</code></pre>
+  $.ajax
+    dataType: <span class="string">"jsonp"</span>
+    type: <span class="string">"GET"</span>
+    url: url
+  .<span class="keyword">then</span>(cb)</code></pre>
 </div>
         </li>
         
