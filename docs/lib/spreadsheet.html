@@ -66,9 +66,9 @@ module.exports.<span class="function"><span class="title">load</span></span> = (
 
   get(listUrl).<span class="keyword">then</span> (listData) -&gt;
     sheetPromises = listData.feed.entry.map (sheet) -&gt;
-      sheetUrlComponents = sheet.id.split(<span class="string">"/"</span>)
-      sheetId = worksheetUrlComponents[worksheetUrlComponents.length - <span class="number">1</span>]        
-      sheetUrl = <span class="string">"//spreadsheets.google.com/feeds/list/<span class="subst">#{key}</span>/<span class="subst">#{worksheetId}</span>/public/values?alt=json"</span>
+      sheetUrlComponents = sheet.id.$t.split(<span class="string">"/"</span>)
+      sheetId = sheetUrlComponents[sheetUrlComponents.length - <span class="number">1</span>]        
+      sheetUrl = <span class="string">"//spreadsheets.google.com/feeds/list/<span class="subst">#{key}</span>/<span class="subst">#{sheetId}</span>/public/values?alt=json"</span>
 
       promise = get(sheetUrl)
 
