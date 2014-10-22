@@ -468,7 +468,7 @@
     },
     "test/google_spreadsheet.coffee": {
       "path": "test/google_spreadsheet.coffee",
-      "content": "Spreadsheet = require \"../lib/spreadsheet\"\n\ndescribe \"Google Spreadsheet wrapper\", ->\n  it \"loads spreadsheet from a given key\", (done) ->\n    Spreadsheet.load \"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", (data) ->\n      console.log data\n      assert data.name is \"Abilities\"\n      assert data.entries.length > 0\n      done()\n",
+      "content": "Spreadsheet = require \"../lib/spreadsheet\"\n\ndescribe \"Google Spreadsheet wrapper\", ->\n  it \"loads spreadsheet from a given key\", (done) ->\n    Spreadsheet.load \"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", (data) ->      \n      assert data.Abilities\n      assert data.Characters\n      assert data.Passives\n      assert data.Progressions\n      assert data.TerrainFeatures\n      \n      assert(data.Abilities.length > 0)\n      done()\n",
       "mode": "100644",
       "type": "blob"
     },
@@ -718,7 +718,7 @@
     },
     "test/google_spreadsheet": {
       "path": "test/google_spreadsheet",
-      "content": "(function() {\n  var Spreadsheet;\n\n  Spreadsheet = require(\"../lib/spreadsheet\");\n\n  describe(\"Google Spreadsheet wrapper\", function() {\n    return it(\"loads spreadsheet from a given key\", function(done) {\n      return Spreadsheet.load(\"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", function(data) {\n        console.log(data);\n        assert(data.name === \"Abilities\");\n        assert(data.entries.length > 0);\n        return done();\n      });\n    });\n  });\n\n}).call(this);\n",
+      "content": "(function() {\n  var Spreadsheet;\n\n  Spreadsheet = require(\"../lib/spreadsheet\");\n\n  describe(\"Google Spreadsheet wrapper\", function() {\n    return it(\"loads spreadsheet from a given key\", function(done) {\n      return Spreadsheet.load(\"0ArtCBkZR37MmdFJqbjloVEp1OFZLWDJ6M29OcXQ1WkE\", function(data) {\n        assert(data.Abilities);\n        assert(data.Characters);\n        assert(data.Passives);\n        assert(data.Progressions);\n        assert(data.TerrainFeatures);\n        assert(data.Abilities.length > 0);\n        return done();\n      });\n    });\n  });\n\n}).call(this);\n",
       "type": "blob"
     },
     "tileset": {
