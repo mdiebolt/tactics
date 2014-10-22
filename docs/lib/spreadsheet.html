@@ -35,21 +35,28 @@
               <p>Load data from a Google spreadsheet from a key.</p>
 
             </div>
-            <div class="content"><pre><code class="lang-coffeescript"><span class="comment"># TODO: metaprogram this to be more flexible</span>
-<span class="comment"># when transforming arbitrary sheets</span>
-<span class="function"><span class="title">transformRows</span></span> = (rows) -&gt;
+            <div class="content"><pre><code class="lang-coffeescript"><span class="function"><span class="title">transformRows</span></span> = (rows) -&gt;
   rows.map (row) -&gt;
     output = {}
-    attrNames = []
+
     Object.keys(row).forEach (key) -&gt;
       <span class="keyword">if</span> (<span class="regexp">/gsx\$/</span>).test(key)
-        output[attrNames.push(key.slice(<span class="number">4</span>))] = row[key]?$t 
+        humanKeyName = key.replace(<span class="string">"gsx$"</span>, <span class="string">""</span>)
+
+        <span class="keyword">if</span> row[key]?.$t.length
+          value = row[key]?.$t 
+        <span class="keyword">else</span> 
+          value = <span class="literal">undefined</span>
+
+        output[humanKeyName] = value
 
     output
 
 <span class="function"><span class="title">processSpreadsheet</span></span> = (data) -&gt;
   output = {}      
-  output[data.feed.title.$t] = transformRows(data.feed.entry)
+  spaces = <span class="keyword">new</span> RegExp(<span class="string">" "</span>, <span class="string">"g"</span>)
+  sheetTitle = data.feed.title.$t.replace(spaces, <span class="string">""</span>)
+  output[sheetTitle] = transformRows(data.feed.entry)
   output
 
 <span class="function"><span class="title">get</span></span> = (url) -&gt;
