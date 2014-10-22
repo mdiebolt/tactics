@@ -58,8 +58,7 @@
     type: <span class="string">"GET"</span>
     url: url
 
-module.exports.<span class="function"><span class="title">load</span></span> = (key, cb) -&gt;
-  transformedSpreadsheets = {}
+module.exports.<span class="function"><span class="title">load</span></span> = (key) -&gt;
   listUrl = <span class="string">"//spreadsheets.google.com/feeds/worksheets/<span class="subst">#{key}</span>/public/values?alt=json"</span>
 
   get(listUrl).<span class="keyword">then</span> (listData) -&gt;
@@ -68,18 +67,17 @@ module.exports.<span class="function"><span class="title">load</span></span> = (
       sheetId = sheetUrlComponents[sheetUrlComponents.length - <span class="number">1</span>]        
       sheetUrl = <span class="string">"//spreadsheets.google.com/feeds/list/<span class="subst">#{key}</span>/<span class="subst">#{sheetId}</span>/public/values?alt=json"</span>
 
-      promise = get(sheetUrl)
+      get(sheetUrl)
 
-      promise.<span class="keyword">then</span> (sheetData) -&gt;
+    $.<span class="keyword">when</span>.apply($, sheetPromises).<span class="keyword">then</span> (sheetData...) -&gt;
+      (sheetData.map (d) -&gt; d[<span class="number">0</span>]).reduce (memo, sheet) -&gt;
         spaces = <span class="keyword">new</span> RegExp(<span class="string">" "</span>, <span class="string">"g"</span>)
-        sheetTitle = sheetData.feed.title.$t.replace(spaces, <span class="string">""</span>)
+        sheetTitle = sheet.feed.title.$t.replace(spaces, <span class="string">""</span>)
 
-        transformedSpreadsheets[sheetTitle] = transformRows(sheetData.feed.entry)
+        memo[sheetTitle] = transformRows(sheet.feed.entry)
 
-      <span class="keyword">return</span> promise
-
-    $.<span class="keyword">when</span>.apply($, sheetPromises).<span class="keyword">then</span> -&gt;
-      cb(transformedSpreadsheets)</code></pre>
+        memo
+      , {}</code></pre>
 </div>
         </li>
         
