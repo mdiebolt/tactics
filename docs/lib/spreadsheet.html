@@ -54,25 +54,26 @@
     entries: transformRows(data.feed.entry)
   }
 
+<span class="function"><span class="title">get</span></span> = (url) -&gt;
+  $.ajax
+    dataType: <span class="string">"jsonp"</span>
+    type: <span class="string">"GET"</span>
+    url: url
+
 module.exports.<span class="function"><span class="title">load</span></span> = (key, cb) -&gt;
   transformedSpreadsheets = []
   listUrl = <span class="string">"//spreadsheets.google.com/feeds/worksheets/<span class="subst">#{key}</span>/public/values?alt=json"</span>
 
-  $.ajax
-    dataType: <span class="string">"jsonp"</span>
-    type: <span class="string">"GET"</span>
-    url: listUrl
-  .<span class="keyword">then</span> (data) -&gt;
-    sheetPromises = data.feed.entry.map (sheet) -&gt;
-      sheetUrl = sheet.link[sheet.link.length - <span class="number">1</span>].href + <span class="string">"?alt=json"</span>
+  get(listUrl).<span class="keyword">then</span> (listData) -&gt;
+    sheetPromises = listData.feed.entry.map (sheet) -&gt;
+      sheetUrlComponents = sheet.id.split(<span class="string">"/"</span>)
+      sheetId = worksheetUrlComponents[worksheetUrlComponents.length - <span class="number">1</span>]        
+      sheetUrl = <span class="string">"//spreadsheets.google.com/feeds/list/<span class="subst">#{key}</span>/<span class="subst">#{worksheetId}</span>/public/values?alt=json"</span>
 
-      promise = $.ajax
-        dataType: <span class="string">"jsonp"</span>
-        type: <span class="string">"GET"</span>
-        url: sheetUrl
+      promise = get(sheetUrl)
 
-      promise.<span class="keyword">then</span> (data) -&gt;
-        transformedSpreadsheets.push processSpreadsheet(data)
+      promise.<span class="keyword">then</span> (sheetData) -&gt;
+        transformedSpreadsheets.push processSpreadsheet(sheetData)
 
       <span class="keyword">return</span> promise
 
