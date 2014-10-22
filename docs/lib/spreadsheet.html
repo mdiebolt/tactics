@@ -46,7 +46,7 @@
       targetZone: row.gsx$targetzone?.$t
       targetRange: row.gsx$targetrange?.$t
       effectRadius: row.gsx$effectRadius?.$t
-    }    
+    }
 
 <span class="function"><span class="title">processSpreadsheet</span></span> = (data) -&gt;
   <span class="keyword">return</span> {
@@ -55,27 +55,29 @@
   }
 
 module.exports.<span class="function"><span class="title">load</span></span> = (key, cb) -&gt;
-  url = <span class="string">"//spreadsheets.google.com/feeds/list/<span class="subst">#{key}</span>/od6/public/values?alt=json"</span>
+  transformedSpreadsheets = []
+  listUrl = <span class="string">"//spreadsheets.google.com/feeds/worksheets/<span class="subst">#{key}</span>/public/values?alt=json"</span>
 
   $.ajax
     dataType: <span class="string">"jsonp"</span>
     type: <span class="string">"GET"</span>
-    url: url
-  .<span class="keyword">then</span> (data) -&gt;</code></pre>
-</div>
-        </li>
-        
-        
-        <li id="section-3">
-            <div class="annotation">
-              <div class="pilwrap">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>Transform our raw spreadsheet result into something more useful.
-Pass the result into our callback</p>
+    url: listUrl
+  .<span class="keyword">then</span> (data) -&gt;
+    sheetPromises = data.feed.entry.map (sheet) -&gt;
+      sheetUrl = sheet.link[sheet.link.length - <span class="number">1</span>].href + <span class="string">"?alt=json"</span>
 
-            </div>
-            <div class="content"><pre><code class="lang-coffeescript">    cb(processSpreadsheet(data))</code></pre>
+      promise = $.ajax
+        dataType: <span class="string">"jsonp"</span>
+        type: <span class="string">"GET"</span>
+        url: sheetUrl
+
+      promise.<span class="keyword">then</span> (data) -&gt;
+        transformedSpreadsheets.push processSpreadsheet(data)
+
+      <span class="keyword">return</span> promise
+
+    $.<span class="keyword">when</span>.apply($, sheetPromises).<span class="keyword">then</span> -&gt;
+      cb(transformedSpreadsheets)</code></pre>
 </div>
         </li>
         
