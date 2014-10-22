@@ -32,27 +32,25 @@
               <div class="pilwrap">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Loads data from a Google spreadsheet based on its key.</p>
+              <p>Load data from a Google spreadsheet from a key.</p>
 
             </div>
             <div class="content"><pre><code class="lang-coffeescript"><span class="comment"># TODO: metaprogram this to be more flexible</span>
 <span class="comment"># when transforming arbitrary sheets</span>
 <span class="function"><span class="title">transformRows</span></span> = (rows) -&gt;
   rows.map (row) -&gt;
-    {
-      name: row.gsx$name?.$t
-      description: row.gsx$description?.$t
-      targetType: row.gsx$targettype?.$t
-      targetZone: row.gsx$targetzone?.$t
-      targetRange: row.gsx$targetrange?.$t
-      effectRadius: row.gsx$effectRadius?.$t
-    }
+    output = {}
+    attrNames = []
+    Object.keys(row).forEach (key) -&gt;
+      <span class="keyword">if</span> (<span class="regexp">/gsx\$/</span>).test(key)
+        output[attrNames.push(key.slice(<span class="number">4</span>))] = row[key]?$t 
+
+    output
 
 <span class="function"><span class="title">processSpreadsheet</span></span> = (data) -&gt;
-  <span class="keyword">return</span> {
-    name: data.feed.title.$t
-    entries: transformRows(data.feed.entry)
-  }
+  output = {}      
+  output[data.feed.title.$t] = transformRows(data.feed.entry)
+  output
 
 <span class="function"><span class="title">get</span></span> = (url) -&gt;
   $.ajax
